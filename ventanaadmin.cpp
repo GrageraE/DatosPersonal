@@ -1,5 +1,6 @@
 #include "ventanaadmin.h"
 #include "ui_ventanaadmin.h"
+#include "ventanaconfirmar.h"
 
 ventanaAdmin::ventanaAdmin(QWidget *parent) :
     QDialog(parent),
@@ -39,4 +40,12 @@ void ventanaAdmin::on_pushButton_2_clicked()
 {
     int dato = ui->tableWidget->currentRow(); //La fila clickeada
     ui->tableWidget->removeRow(dato);
+}
+
+void ventanaAdmin::on_pushButton_4_clicked()
+{
+    ventanaConfirmar ventanaconfirmar;
+    ventanaconfirmar.setModal(true);
+    ventanaconfirmar.exec();
+    return;
 }

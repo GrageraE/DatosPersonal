@@ -79,7 +79,10 @@ void MainWindow::on_pushButton_clicked()
         ui->result->setText("La contraseña no es correcta");
         return;
     }
-    ui->result->setText("Identificación correcta");
+    //Cerramos los archivos
+    archivo.close();
+    archivo2.close();
+    ui->result->setText("Identificación correcta"); //Lo comunicamos
     //Invocamos la ventana
     ventanaAdmin ventanaadmin;
     ventanaadmin.setModal(true);

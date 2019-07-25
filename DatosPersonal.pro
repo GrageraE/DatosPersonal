@@ -28,16 +28,19 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
         ventanaadmin.cpp \
+        ventanaconfirmar.cpp \
         ventanainicio.cpp
 
 HEADERS += \
         mainwindow.h \
         ventanaadmin.h \
+        ventanaconfirmar.h \
         ventanainicio.h
 
 FORMS += \
         mainwindow.ui \
         ventanaadmin.ui \
+        ventanaconfirmar.ui \
         ventanainicio.ui
 
 # Default rules for deployment.
