@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include <QCryptographicHash>
 #include <string>
 //Mis librerias
 #include <fstream>
@@ -38,6 +39,7 @@ void MainWindow::on_pushButton_3_clicked()
 void MainWindow::on_pushButton_clicked()
 {
     QString user, pass;
+    /* Variables con el hash */ QString userHash, passHash; /*--------*/
     string userStr, passStr, temp, temp2;
     user = ui->usuario->text();
     pass = ui->contra->text();
@@ -55,7 +57,11 @@ void MainWindow::on_pushButton_clicked()
     {
         getline(archivo, temp);
     }
-    if(temp!=userStr)
+    //Hasheamos userStr // El usuario recogido
+    userHash = QString::fromStdString(userStr);
+    userHash = QString(QCryptographicHash::hash(userHash.toUtf8(), QCryptographicHash::Md5).toHex());
+
+    if(temp!=userHash.toStdString())
     {
         ui->result->setText("El usuario no es correcto");
         return;
@@ -64,7 +70,11 @@ void MainWindow::on_pushButton_clicked()
     {
         getline(archivo2, temp2);
     }
-    if(temp2!=passStr)
+    //Hasheamos passStr // La contraseña recogida
+    passHash = QString::fromStdString(passStr);
+    passHash = QString(QCryptographicHash::hash(passHash.toUtf8(), QCryptographicHash::Md5).toHex());
+
+    if(temp2!=passHash.toStdString())
     {
         ui->result->setText("La contraseña no es correcta");
         return;
