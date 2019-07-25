@@ -5,4 +5,4 @@ Programa para almacenar datos
 `git clone https://github.com/GrageraE/DatosPersonal.git`
 1. Se puede compilar con Qt 5 desde el Qt Creator o con `qmake`
 ### Licencia
-Ve a LICENSE.md 
+Ve a LICENSE
