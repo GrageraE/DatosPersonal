@@ -24,6 +24,12 @@ private slots:
 
     void on_pushButton_4_clicked();
 
+    void conectarSql();
+
+    void recogerDatos();
+
+    void crearTabla(int count);
+
 private:
     Ui::ventanaAdmin *ui;
 
