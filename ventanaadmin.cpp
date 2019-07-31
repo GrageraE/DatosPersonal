@@ -8,6 +8,7 @@
 #include <QSqlError>
 #include <QMessageBox>
 #include <string>
+#include <fstream>
 
 ventanaAdmin::ventanaAdmin(QWidget *parent) :
     QDialog(parent),
@@ -57,6 +58,20 @@ void ventanaAdmin::on_pushButton_clicked() //Añadir
         crearTabla(dato.count); //Creamos tabla; si no existe - PASO 2
     }
     //Guardar los datos - PASO 3
+    QSqlQuery query;
+    //Esto de aquí es un poco largo:
+    if(!query.exec("INSERT INTO person" + QString::number(dato.count) + "(id, nombre) VALUES (" + id + ",'" + nombre + "');"))
+    {
+        QMessageBox::information(this, "Error", query.lastError().text());
+        ui->result->setText("Ha habido un error al insertar los datos");
+        return;
+    }
+    //Guardar el count
+    std::ofstream cuenta;
+    cuenta.open("usuario/cuenta.txt", std::ios::out);
+    cuenta <<dato.count;
+    cuenta.close();
+    return;
 }
 
 void ventanaAdmin::on_pushButton_2_clicked()
