@@ -1,6 +1,9 @@
 #include "ventanaconfirmar.h"
 #include "ui_ventanaconfirmar.h"
 #include <stdlib.h>
+#include <QtSql>
+#include <QSqlQuery>
+#include <QMessageBox>
 using namespace std;
 
 ventanaConfirmar::ventanaConfirmar(QWidget *parent) :
@@ -22,6 +25,10 @@ void ventanaConfirmar::on_buttonBox_rejected()
 
 void ventanaConfirmar::on_buttonBox_accepted()
 {
+    QSqlQuery query;
+    query.exec("DROP DATABASE qt;");
+    query.exec("CREATE DATABASE qt;");
     system("DEL usuario");
-    system("RD usuario");
+    QMessageBox::information(this, "Información", "Operación realizada correctamente. Usuario eliminado");
+    reject();
 }

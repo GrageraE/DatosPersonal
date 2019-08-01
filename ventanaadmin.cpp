@@ -97,7 +97,7 @@ void ventanaAdmin::on_pushButton_4_clicked()
     ventanaConfirmar ventanaconfirmar;
     ventanaconfirmar.setModal(true);
     ventanaconfirmar.exec();
-    return;
+    reject();
 }
 
 void ventanaAdmin::conectarSql()
@@ -147,6 +147,17 @@ void ventanaAdmin::recogerDatos() //Del servidor
         i++;
     }
     //PASO 3 - Mostrarlo en la tabla (QTableWidget)
+    i=0;
+    while(i<=dato.count)
+    {
+        ui->tableWidget->insertRow(ui->tableWidget->rowCount());
+        ui->tableWidget->setItem(ui->tableWidget->rowCount()-1, NOMBRE,
+                                 new QTableWidgetItem(dato.nombre[i]));
+        ui->tableWidget->setItem(ui->tableWidget->rowCount()-1, ID,
+                                 new QTableWidgetItem(QString::number(dato.id[i])));
+        i++;
+    }
+    return;
 }
 
 void ventanaAdmin::crearTabla(int count)
@@ -172,4 +183,5 @@ void ventanaAdmin::on_toolButton_clicked()
     cuenta <<-1;
     cuenta.close();
     dato.count = -1;
+    QMessageBox::information(this, "Información", "Operación realizada con éxito");
 }
