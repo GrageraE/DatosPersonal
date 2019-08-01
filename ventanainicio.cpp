@@ -3,6 +3,7 @@
 #include <QCryptographicHash>
 #include <string>
 #include <fstream>
+#include <QMessageBox>
 using namespace std;
 
 ventanaInicio::ventanaInicio(QWidget *parent) :
@@ -48,5 +49,8 @@ void ventanaInicio::on_pushButton_clicked()
     archivo2 <<passHash.toStdString();
     archivo.close();
     archivo2.close();
-    return;
+    //Comunicar y cerrar la ventana
+    QMessageBox::information(this, "Información", "Configuración completada, "
+                                                  "esta ventana se cerrará.");
+    reject();
 }
