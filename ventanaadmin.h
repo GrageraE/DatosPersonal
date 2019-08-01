@@ -30,6 +30,8 @@ private slots:
 
     void crearTabla(int count);
 
+    void on_toolButton_clicked();
+
 private:
     Ui::ventanaAdmin *ui;
 

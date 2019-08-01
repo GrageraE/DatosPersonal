@@ -22,12 +22,12 @@ ventanaAdmin::ventanaAdmin(QWidget *parent) :
 
     //Conectar a Sql
     conectarSql();
-    //recogerDatos();
+    recogerDatos();
 }
 
 struct{
-    int id[10];
-    QString nombre[10];
+    int id[100];
+    QString nombre[100];
     int count = -1;
 }dato;
 
@@ -76,8 +76,20 @@ void ventanaAdmin::on_pushButton_clicked() //Añadir
 
 void ventanaAdmin::on_pushButton_2_clicked()
 {
-    int dato = ui->tableWidget->currentRow(); //La fila clickeada
-    ui->tableWidget->removeRow(dato);
+    int datoTabla = ui->tableWidget->currentRow(); //La fila clickeada
+    ui->tableWidget->removeRow(datoTabla);
+    QSqlQuery query;
+    if(!query.exec("DROP TABLE person" + QString::number(datoTabla) + ";"))
+    {
+        QMessageBox::information(this, "Error", query.lastError().text());
+        QMessageBox::information(this, "Información", "Puede que sea necesario activar el tool button.");
+        return;
+    }
+    std::ofstream cuenta;
+    cuenta.open("usuario/cuenta.txt", std::ios::out);
+    dato.count--;
+    cuenta <<dato.count;
+    cuenta.close();
 }
 
 void ventanaAdmin::on_pushButton_4_clicked()
@@ -107,7 +119,34 @@ void ventanaAdmin::conectarSql()
 
 void ventanaAdmin::recogerDatos() //Del servidor
 {
-    return;
+    //PASO 1 - Extraer la cuenta
+    std::ifstream cuenta;
+    std::string temp;
+    cuenta.open("usuario/cuenta.txt", std::ios::in);
+    if(cuenta.fail())
+    {
+        QMessageBox::information(this, "Información", "No tienes una tabla creada ni registros guardados. Abortando...");
+        return;
+    }
+    while (!cuenta.eof()) {
+        std::getline(cuenta, temp);
+    }
+    dato.count = std::stoi(temp);
+    cuenta.close();
+    //PASO 2 - Seleccionar de las tablas
+    QSqlQuery query;
+    int i = 0;
+    while(i<=dato.count)
+    {
+        query.exec("SELECT * FROM person" + QString::number(i) + ";");
+        while(query.next())
+        {
+            dato.id[i] = query.value(0).toInt();
+            dato.nombre[i] = query.value(1).toString();
+        }
+        i++;
+    }
+    //PASO 3 - Mostrarlo en la tabla (QTableWidget)
 }
 
 void ventanaAdmin::crearTabla(int count)
@@ -116,7 +155,6 @@ void ventanaAdmin::crearTabla(int count)
     std::string comando = "CREATE TABLE person";
     comando = comando + std::to_string(count);
     comando = comando + "(id int, nombre varchar(100));";
-    QMessageBox::information(this, "Info", QString::fromStdString(comando));
     QSqlQuery query;
     if(!query.exec(QString::fromStdString(comando)))
     {
@@ -125,4 +163,13 @@ void ventanaAdmin::crearTabla(int count)
     }
     ui->result->setText("La tabla se ha creado correctamente");
     return;
+}
+
+void ventanaAdmin::on_toolButton_clicked()
+{
+    std::ofstream cuenta;
+    cuenta.open("usuario/cuenta.txt", std::ios::out);
+    cuenta <<-1;
+    cuenta.close();
+    dato.count = -1;
 }
